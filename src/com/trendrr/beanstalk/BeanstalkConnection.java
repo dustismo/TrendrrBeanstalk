@@ -54,6 +54,10 @@ public class BeanstalkConnection {
 			log.info("Caught", x);
 		}
 	}
+
+	public boolean isOpen() {
+		return channel.isOpen();
+	}
 	
 	public void write(String str) throws BeanstalkDisconnectedException, BeanstalkException{
 		try {
