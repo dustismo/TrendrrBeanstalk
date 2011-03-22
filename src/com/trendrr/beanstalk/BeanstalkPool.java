@@ -121,7 +121,7 @@ public class BeanstalkPool {
 			log.error("Too many clients in use!");	
 			throw new BeanstalkException("To many clients in use");
 		}
-		BeanstalkClient client = new BeanstalkClient(this.addr, this.port, this.tube);
+		BeanstalkClient client = new BeanstalkClient(this.addr, this.port, this.tube, this);
 	
 		this.clients.add(client);
 		client.inUseSince = new Date();

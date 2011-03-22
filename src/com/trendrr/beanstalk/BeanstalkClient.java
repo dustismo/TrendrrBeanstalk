@@ -57,6 +57,13 @@ public class BeanstalkClient {
 		this.tube = tube;
 	}
 	
+	public BeanstalkClient(String addr, int port, String tube, BeanstalkPool pool) {
+		this.addr = addr;
+		this.port = port;
+		this.tube = tube;
+		this.pool = pool;
+	}
+
 	/**
 	 * will return the connection to the pool, or close the underlying socket if this
 	 * did not come from a pool
