@@ -19,7 +19,7 @@
 		depends="clean"
 		>
 		<mkdir dir="build/classes"/>
-		<javac classpathref="build.classpath" destdir="build/classes" debug="true" debuglevel="lines,vars">
+		<javac classpathref="build.classpath" destdir="build/classes" debug="true">
 			<src path="src" />
 		</javac>
 	</target>
