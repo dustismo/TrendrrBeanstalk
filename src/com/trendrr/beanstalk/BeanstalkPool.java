@@ -91,7 +91,7 @@ public class BeanstalkPool {
 				if (client.lastUsed != null && client.lastUsed.before(maxIdle)) {
 					client.reap = true;
 				}
-				if (! client.con.isOpen()) {
+				if (client.con != null && ! client.con.isOpen()) {
 					client.reap = true;
 				}
 				
