@@ -4,7 +4,6 @@
 package com.trendrr.beanstalk;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
@@ -56,7 +55,7 @@ public class BeanstalkConnection {
 	}
 
 	public boolean isOpen() {
-		return channel.isOpen();
+		return channel != null && channel.isOpen();
 	}
 	
 	public void write(String str) throws BeanstalkDisconnectedException, BeanstalkException{
