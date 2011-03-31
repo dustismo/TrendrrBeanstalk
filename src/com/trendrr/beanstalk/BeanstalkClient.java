@@ -252,7 +252,15 @@ public class BeanstalkClient {
 			throw x;
 		}
 	}
-	
+
+	/**
+	 * Reserves a job from the queue.
+	 * @param timeoutSeconds The number of seconds to wait for a job. Null if a job should be reserved
+	 *   only if immediately available.
+	 * @return The head of the queue, or null if the specified timeout elapses before a job is available.
+	 * @throws BeanstalkException If an unexpected response is received from the server, or other unexpected
+	 * 	 problem occurs.
+	 */
 	public BeanstalkJob reserve(Integer timeoutSeconds) throws BeanstalkException{
 		try {			
 			this.init();
@@ -268,7 +276,7 @@ public class BeanstalkClient {
 			log.info(line);
 			
 			if (line.startsWith("TIMED_OUT")) {
-				throw new BeanstalkException("TIMED OUT");	
+				return null;
 			}
 			
 			if (!line.startsWith("RESERVED")) {
