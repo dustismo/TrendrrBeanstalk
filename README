@@ -8,4 +8,4 @@ There is a simple connection pool so client connections can be reused.
 
 See src/Example for example usage.
 
-License is LGPL
+License is MIT
