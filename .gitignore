@@ -1,0 +1,7 @@
+# IGNORED FILES
+#
+build/*
+*.project
+*.settings
+.classpath
+bin/*

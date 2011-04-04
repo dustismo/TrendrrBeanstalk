@@ -26,7 +26,7 @@
 	
 	<target name="jar" depends="compile">
 		<property name="version.num" value="1.00" />
-		<buildnumber file="build.num"/>
+		<buildnumber file="build/build.num"/>
 		<tstamp>
 			<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
 	   	</tstamp>
@@ -58,7 +58,7 @@
 			<attribute name="Class-Path" value="${classpath}"/>
 		</manifest>
 
-		<jar destfile="trendrr-beanstalk.jar"
+		<jar destfile="build/trendrr-beanstalk.jar"
 			basedir="build/jar"
 			manifest="build/jar/META-INF/MANIFEST.MF"
 			>
