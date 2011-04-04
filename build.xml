@@ -66,4 +66,35 @@
 			<include name="**/*"/>
 		</jar>
 	</target>
+	
+	<!-- This is for doing a production build of the jar and javadocs.  It expects to 
+		put the files in /html/TrendrrBeanstalk.  This target is mostly for my own setup
+		-Dustin
+	-->
+	<target name="production-build" description="Builds the javadocs and production jar"
+		depends="jar,javadoc"
+		>
+		<mkdir dir="/html/TrendrrBeanstalk/javadoc"/>
+		<copy todir="/html/TrendrrBeanstalk/javadoc">
+			<fileset dir="build/javadoc">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+		<copy todir="/html/TrendrrBeanstalk">
+			<fileset dir="build">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="javadoc" description="Create Javadocs">
+        <mkdir dir="build/javadoc/"/>
+        <javadoc 
+            destdir="build/javadoc/"
+        	classpathref="build.classpath"
+        	access="public"
+        	>
+            <fileset dir="src" includes="**/*.java" />
+        </javadoc>
+    </target>
 </project>
