@@ -4,6 +4,7 @@
 package com.trendrr.beanstalk;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
@@ -83,6 +84,9 @@ public class BeanstalkConnection {
 			throw new BeanstalkDisconnectedException(x);
 		}
 		if (x instanceof ClosedByInterruptException) {
+			throw new BeanstalkDisconnectedException(x);
+		}
+		if (x instanceof IOException) {
 			throw new BeanstalkDisconnectedException(x);
 		}
 		

@@ -300,6 +300,9 @@ public class BeanstalkClient {
 			job.setClient(this);
 			return job;	
 			
+		} catch (BeanstalkDisconnectedException x) {
+			this.reap = true; //reap that shit..
+			throw x;
 		} catch (BeanstalkException x) {
 			throw x;
 		} catch (Exception x) {
