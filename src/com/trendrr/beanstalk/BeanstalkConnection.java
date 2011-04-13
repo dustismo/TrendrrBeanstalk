@@ -6,11 +6,7 @@ package com.trendrr.beanstalk;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousCloseException;
-import java.nio.channels.ClosedByInterruptException;
-import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NotYetConnectedException;
 import java.nio.channels.SocketChannel;
 
@@ -36,6 +32,7 @@ public class BeanstalkConnection {
 		try {
 			this.channel = SocketChannel.open();
 			this.channel.connect(new InetSocketAddress(addr, port));
+			this.channel.finishConnect();
 		} catch (Exception x) {
 			throw new BeanstalkException(x);
 		}
