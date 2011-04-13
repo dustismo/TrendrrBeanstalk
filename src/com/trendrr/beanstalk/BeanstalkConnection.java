@@ -74,22 +74,10 @@ public class BeanstalkConnection {
 		if (x instanceof NotYetConnectedException) {
 			throw new BeanstalkDisconnectedException(x);
 		}
-		if (x instanceof ClosedChannelException) {
-			throw new BeanstalkDisconnectedException(x);
-		}
-		if (x instanceof SocketException) {
-			throw new BeanstalkDisconnectedException(x);
-		}
-		if (x instanceof AsynchronousCloseException) {
-			throw new BeanstalkDisconnectedException(x);
-		}
-		if (x instanceof ClosedByInterruptException) {
-			throw new BeanstalkDisconnectedException(x);
-		}
 		if (x instanceof IOException) {
 			throw new BeanstalkDisconnectedException(x);
 		}
-		
+
 		
 		throw new BeanstalkException(x);
 	}
