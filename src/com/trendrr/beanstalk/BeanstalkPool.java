@@ -32,22 +32,28 @@ public class BeanstalkPool {
 	
 	/**
 	 * setup a new pool.  
-	 * set poolSize to 0 for unlimited
 	 * 
-	 * @param addr
-	 * @param port
-	 * @param poolSize
+	 * @param addr address of the beanstalkd server to connection to
+	 * @param port port of the beanstalkd server
+	 * @param maxPoolSize maximum number of clients allowed in the pool (0 for infinity)
 	 * @param tube All operations for the client will work on the tube.
 	 */
-	public BeanstalkPool(String addr, int port, int poolSize, String tube) {
+	public BeanstalkPool(String addr, int port, int maxPoolSize, String tube) {
 		this.addr = addr;
 		this.port = port;
-		this.maxClients = poolSize;
+		this.maxClients = maxPoolSize;
 		this.tube = tube;
 	}
 
-	public BeanstalkPool(String addr, int port, int poolSize) {
-		this(addr, port, poolSize, null);
+	/**
+	 * setup a new pool.  
+	 * 
+	 * @param addr address of the beanstalkd server to connection to
+	 * @param port port of the beanstalkd server
+	 * @param maxPoolSize maximum number of clients allowed in the pool (0 for infinity)
+	 */
+	public BeanstalkPool(String addr, int port, int maxPoolSize) {
+		this(addr, port, maxPoolSize, null);
 	}
 	
 	/**
@@ -59,16 +65,17 @@ public class BeanstalkPool {
 	}
 	
 	/**
-	 * synchronized, but should be fast as the client initializtion code happens lazily. 
 	 * 
-	 * throws throttled exception if to many connections are currently in use.
-	 * 
-	 * 
-	 * TODO: could do this in a more concurrent way, but i think its fine.
+	 * This gets a client from the pool.  will throw a BeanstalkException if 
+	 * there are more then the maximum number of clients checked out. 
 	 * 
 	 * @return
 	 */
 	public synchronized BeanstalkClient getClient() throws BeanstalkException{
+		/*
+		 * synchronized, but should be fast as the client initialization code happens lazily. 
+		 */
+		
 		Set<BeanstalkClient> toRemove = new HashSet<BeanstalkClient>();
 		
 		Date max = new Date(new Date().getTime() - this.maxUseTime);
@@ -128,6 +135,10 @@ public class BeanstalkPool {
 		return client;
 	}
 	
+	/**
+	 * returns a client to the pool
+	 * @param client
+	 */
 	public synchronized void done(BeanstalkClient client) {
 		client.inUseSince = null;
 	}
