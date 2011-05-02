@@ -187,9 +187,15 @@ public class BeanstalkClient {
 	}
 	*/
 	/**
-	 * puts a task into the queue
-	 * @param task
-	 * @param callback
+	 * Puts a task into the currently used queue (see {@link #useTube(String)}.
+	 * @param priority The job priority, from 0 to 2^32. Most urgent = 0, least urgent = 4294967295.
+	 * @param delay The time the server will wait before putting the job on the ready queue.
+	 * @param ttr The job time-to-run. The server will automatically release the job after this TTR (in seconds)
+	 *   after a client reserves it.
+	 * @param data The job data.
+	 * @return The id of the inserted job.
+	 * @throws BeanstalkException If an unexpected response is received from the server, or other unexpected
+	 * 	 problem occurs.
 	 */
 	public long put(long priority, int delay, int ttr, byte[] data) throws BeanstalkException{
 		try {			
@@ -300,6 +306,71 @@ public class BeanstalkClient {
 			job.setClient(this);
 			return job;	
 			
+		} catch (BeanstalkDisconnectedException x) {
+			this.reap = true; //reap that shit..
+			throw x;
+		} catch (BeanstalkException x) {
+			throw x;
+		} catch (Exception x) {
+			throw new BeanstalkException(x);
+		}
+	}
+
+	/**
+	 * Releases a job (places it back onto the queue).
+	 * @param job The job to release. This job must previously have been reserved.
+	 * @param priority The new priority to assign to the released job.
+	 * @param delay The number of seconds the server should wait before placing the job onto the ready queue.
+	 * @throws BeanstalkException If an unexpected response is received from the server, or other unexpected
+	 * 	 problem occurs.
+	 */
+	public void release(BeanstalkJob job, int priority, int delay) throws BeanstalkException {
+		try {
+			this.init();
+			String command = "release " + job.getId() + " " + priority + " " + delay + "\r\n";
+
+			log.info(this);
+			log.info(command);
+			con.write(command);
+			String line = con.readControlResponse();
+			log.info(line);
+
+			if (!line.startsWith("RELEASED")) {
+				throw new BeanstalkException(line);
+			}
+
+		} catch (BeanstalkDisconnectedException x) {
+			this.reap = true; //reap that shit..
+			throw x;
+		} catch (BeanstalkException x) {
+			throw x;
+		} catch (Exception x) {
+			throw new BeanstalkException(x);
+		}
+	}
+
+	/**
+	 * Buries a job ("buried" state means the job will not be touched by the server again until "kicked").
+	 * @throws BeanstalkException If an unexpected response is received from the server, or other unexpected
+	 * 	 problem occurs.
+	 * @param job The job to bury. This job must previously have been reserved.
+	 * @param priority The new priority to assign to the job.
+	 */
+	public void bury(BeanstalkJob job, int priority) throws BeanstalkException {
+		try {
+			this.init();
+			String command = "bury " + job.getId() + " " + priority + "\r\n";
+
+			log.info(this);
+			log.info(command);
+			con.write(command);
+			String line = con.readControlResponse();
+			log.info(line);
+
+			if (!line.startsWith("BURIED")) {
+				throw new BeanstalkException(line);
+			}
+
 		} catch (BeanstalkDisconnectedException x) {
 			this.reap = true; //reap that shit..
 			throw x;
