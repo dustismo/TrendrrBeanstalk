@@ -100,7 +100,7 @@ public class BeanstalkClient {
 			this.init();
 			con.write("use " + tube + "\r\n");
 			String line = con.readControlResponse();
-			log.info(line);
+			log.debug(line);
 			if (line.startsWith("USING")) {
 				return;
 			}
@@ -119,7 +119,7 @@ public class BeanstalkClient {
 			con.write("watch " + tube + "\r\n");
 			
 			String line = con.readControlResponse();
-			log.info(line);
+			log.debug(line);
 			
 			if (line.startsWith("WATCHING")) {
 				return;
@@ -138,7 +138,7 @@ public class BeanstalkClient {
 			this.init();
 			con.write("ignore " + tube + "\r\n");
 			String line = con.readControlResponse();
-			log.info(line);
+			log.debug(line);
 			
 			if (line.startsWith("WATCHING")) {
 				return;
@@ -243,11 +243,11 @@ public class BeanstalkClient {
 		try {			
 			this.init();
 			String command = "delete " + id + "\r\n";
-			log.info(this);
-			log.info(command);
+			log.debug(this);
+			log.debug(command);
 			con.write(command);
 			String line = con.readControlResponse();
-			log.info(line);
+			log.debug(line);
 			
 			if (line.startsWith("DELETED")) {
 				return;	
@@ -275,11 +275,11 @@ public class BeanstalkClient {
 				command = "reserve-with-timeout " + timeoutSeconds + "\r\n";
 			}
 			
-			log.info(this);
-			log.info(command);
+			log.debug(this);
+			log.debug(command);
 			con.write(command);
 			String line = con.readControlResponse();
-			log.info(line);
+			log.debug(line);
 			
 			if (line.startsWith("TIMED_OUT")) {
 				return null;
@@ -294,8 +294,8 @@ public class BeanstalkClient {
 			
 			int numBytes= Integer.parseInt(tmp[2]);
 			
-			log.info("ID : " + id);
-			log.info("numbytes: " + numBytes);
+			log.debug("ID : " + id);
+			log.debug("numbytes: " + numBytes);
 				
 			byte[] bytes = con.readBytes(numBytes);
 //			log.info("GOT TASK: " + new String(bytes));
@@ -329,11 +329,11 @@ public class BeanstalkClient {
 			this.init();
 			String command = "release " + job.getId() + " " + priority + " " + delay + "\r\n";
 
-			log.info(this);
-			log.info(command);
+			log.debug(this);
+			log.debug(command);
 			con.write(command);
 			String line = con.readControlResponse();
-			log.info(line);
+			log.debug(line);
 
 			if (!line.startsWith("RELEASED")) {
 				throw new BeanstalkException(line);
@@ -361,11 +361,11 @@ public class BeanstalkClient {
 			this.init();
 			String command = "bury " + job.getId() + " " + priority + "\r\n";
 
-			log.info(this);
-			log.info(command);
+			log.debug(this);
+			log.debug(command);
 			con.write(command);
 			String line = con.readControlResponse();
-			log.info(line);
+			log.debug(line);
 
 			if (!line.startsWith("BURIED")) {
 				throw new BeanstalkException(line);
