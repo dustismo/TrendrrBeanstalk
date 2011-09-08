@@ -42,13 +42,13 @@ public class BeanstalkConnection {
 		try {
 			outbuf.close();
 		} catch (Exception x) {
-			log.info("Caught", x);
+			log.debug("Caught", x);
 		}
 		
 		try {
 			channel.close();
 		} catch (Exception x) {
-			log.info("Caught", x);
+			log.debug("Caught", x);
 		}
 	}
 
@@ -193,7 +193,7 @@ public class BeanstalkConnection {
 				bytesWritten++;
 			}
 			if (bytesWritten >= bytes.length) {
-				log.info("468 GOT : " + bytesWritten + " " + bytes.length);
+				log.debug("468 GOT : " + bytesWritten + " " + bytes.length);
 				return bytes;
 			}
 		}
