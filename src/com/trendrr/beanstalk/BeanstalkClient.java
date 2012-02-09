@@ -3,11 +3,11 @@
  */
 package com.trendrr.beanstalk;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Date;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Date;
 
 //import com.trendrr.common.DynMap;
 
@@ -153,12 +153,12 @@ public class BeanstalkClient {
 	/**
 	 * stats for the current tube
 	 * @throws BeanstalkException
-	 
-	public DynMap tubeStats() throws BeanstalkException {
+	*/ 
+	public String tubeStats() throws BeanstalkException {
 		return this.tubeStats(this.tube);
 	}
 	
-	public DynMap tubeStats(String tube) throws BeanstalkException {
+	public String tubeStats(String tube) throws BeanstalkException {
 		try {			
 			this.init();
 			String command = "stats-tube " + tube + "\r\n";
@@ -179,13 +179,12 @@ public class BeanstalkClient {
 			
 			log.info(response);
 			
-			return DynMap.instanceFromYaml(response);
+			return response;
 		} catch (BeanstalkDisconnectedException x) {
 			this.reap = true; //reap that shit..
 			throw x;
 		} 
 	}
-	*/
 	/**
 	 * Puts a task into the currently used queue (see {@link #useTube(String)}.
 	 * @param priority The job priority, from 0 to 2^32. Most urgent = 0, least urgent = 4294967295.
