@@ -1,7 +1,15 @@
-# IGNORED FILES
-#
-build/*
-*.project
-*.settings
+.idea
+.DS_Store
+hector.iml
+releases
+target
+tmp
+bin
 .classpath
-bin/*
+.project
+.settings
+out
+*.ipr
+*.iws
+*.iml
+.springBeans
