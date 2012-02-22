@@ -315,6 +315,30 @@ public class BeanstalkClient {
 		}
 	}
 
+    public void release(long id, int priority, int delay) throws BeanstalkException {
+        try {
+            this.init();
+            String command = "release " + id + " " + priority + " " + delay + "\r\n";
+
+            log.debug(this);
+            log.debug(command);
+            con.write(command);
+            String line = con.readControlResponse();
+            log.debug(line);
+
+            if (!line.startsWith("RELEASED")) {
+                throw new BeanstalkException(line);
+            }
+
+        } catch (BeanstalkDisconnectedException x) {
+            this.reap = true; //reap that shit..
+            throw x;
+        } catch (BeanstalkException x) {
+            throw x;
+        } catch (Exception x) {
+            throw new BeanstalkException(x);
+        }        
+    }
 	/**
 	 * Releases a job (places it back onto the queue).
 	 * @param job The job to release. This job must previously have been reserved.
@@ -324,28 +348,7 @@ public class BeanstalkClient {
 	 * 	 problem occurs.
 	 */
 	public void release(BeanstalkJob job, int priority, int delay) throws BeanstalkException {
-		try {
-			this.init();
-			String command = "release " + job.getId() + " " + priority + " " + delay + "\r\n";
-
-			log.debug(this);
-			log.debug(command);
-			con.write(command);
-			String line = con.readControlResponse();
-			log.debug(line);
-
-			if (!line.startsWith("RELEASED")) {
-				throw new BeanstalkException(line);
-			}
-
-		} catch (BeanstalkDisconnectedException x) {
-			this.reap = true; //reap that shit..
-			throw x;
-		} catch (BeanstalkException x) {
-			throw x;
-		} catch (Exception x) {
-			throw new BeanstalkException(x);
-		}
+	    release(job.getId(), priority, delay);
 	}
 
 	/**
