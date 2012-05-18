@@ -70,7 +70,9 @@ public class BeanstalkClient {
 	 */
 	public void close() {
 		if (this.pool == null) {
-			this.con.close();
+			if (this.con != null) {
+				this.con.close();
+			}
 			return;
 		}
 		pool.done(this);
