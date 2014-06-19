@@ -9,3 +9,5 @@ There is a simple connection pool so client connections can be reused.
 See src/Example for example usage.
 
 License is MIT
+
+== Please Note - This is not actively maintained.  If someone wants to maintain a fork I am happy to link to that.  
