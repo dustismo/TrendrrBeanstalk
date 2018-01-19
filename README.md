@@ -14,22 +14,7 @@ See **example/Example.java** for example usage.
 
 ---
 
-# How to install the requirements and build this package
-
-## Install Gradle version 3.4+
-
-### - Debian-based (like Ubuntu)
-
-```
-$ sudo add-apt-repository ppa:cwchien/gradle
-$ sudo apt-get update
-$ sudo apt install gradle
-```
-
-### - Mac OS X
-```
-$ brew install gradle
-```
+# How to install the requirements and build this package (Using Gradle)
 
 ## Download TrendrrBeanstalk
 ```
